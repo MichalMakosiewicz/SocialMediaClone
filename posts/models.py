@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.forms import ModelForm
 
 import misaka
 
@@ -10,12 +11,13 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 # Create your models here.
 
-class Post(models.Model):
-    user =  models.ForeignKey(User,related_name='post')
+
+class Post(ModelForm):
+    user =  models.ForeignKey(User,related_name='post', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
     message = models.TextField()
     message_html = models.TextField(editable=False)
-    group = models.ForeignKey(Group,related_name='post',null=True,blank=True)
+    group = models.ForeignKey(Group, related_name='post', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.message
